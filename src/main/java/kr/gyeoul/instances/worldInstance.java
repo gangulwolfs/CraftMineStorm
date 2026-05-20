@@ -1,13 +1,11 @@
 package kr.gyeoul.instances;
 
 import kr.gyeoul.instances.light.LightEngine;
-import kr.gyeoul.serverSettings;
+import kr.gyeoul.ServerSettings;
 import net.hollowcube.polar.PolarLoader;
 import net.hollowcube.polar.PolarReader;
 import net.hollowcube.polar.PolarWorld;
 import net.kyori.adventure.text.Component;
-import net.minestom.server.MinecraftServer;
-import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.block.Block;
@@ -17,12 +15,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class worldInstance {
+public class WorldInstance {
 
     private InstanceManager instanceManager;
     private InstanceContainer instanceContainer;
 
-    public worldInstance(InstanceManager instanceManager, InstanceContainer instanceContainer){
+    public WorldInstance(InstanceManager instanceManager, InstanceContainer instanceContainer){
         this.instanceManager = instanceManager;
         // instance 역할임.
         this.instanceContainer = instanceContainer;
@@ -72,7 +70,7 @@ public class worldInstance {
 
     public void polarWorldLoader(String worldName) {
         if(Path.of(worldName + File.separator + "world.polar").toFile().exists()){
-            serverSettings.getLogger().info(Component.text("Polar world file found. Loading world: " + worldName));
+            ServerSettings.getInstance().getLogger().info(Component.text("Polar world file found. Loading world: " + worldName));
             try{
                 // Read the Polar file
                 byte[] worldData = Files.readAllBytes(Path.of(worldName + File.separator + worldName + ".polar"));
@@ -83,7 +81,7 @@ public class worldInstance {
                 throw new RuntimeException(e);
             }
         } else {
-            serverSettings.getLogger().warn(Component.text("Polar world file not found for world: " + worldName + ". Please ensure the file exists at the specified path."));
+            ServerSettings.getInstance().getLogger().warn(Component.text("Polar world file not found for world: " + worldName + ". Please ensure the file exists at the specified path."));
         }
     }
 

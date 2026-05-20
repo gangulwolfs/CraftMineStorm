@@ -10,12 +10,12 @@ import net.minestom.server.event.player.PlayerSkinInitEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.instance.InstanceContainer;
 
-public class minestomEventListener {
+public class MinestomEventListener {
 
     private MinecraftServer minecraftServer;
     private GlobalEventHandler globalEventHandler;
 
-    public minestomEventListener(MinecraftServer minecraftServer, InstanceContainer instanceContainer){
+    public MinestomEventListener(MinecraftServer minecraftServer, InstanceContainer instanceContainer){
         this.minecraftServer = minecraftServer;
         this.globalEventHandler = MinecraftServer.getGlobalEventHandler();
         //플레이어 기본 접속 허용 이벤트

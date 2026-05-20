@@ -1,8 +1,10 @@
 package kr.gyeoul;
 
-import kr.gyeoul.instances.worldInstance;
+import kr.gyeoul.instances.WorldInstance;
 import kr.gyeoul.instances.worldType;
-import kr.gyeoul.listener.events.minestomEventListener;
+import kr.gyeoul.listener.events.MinestomEventListener;
+import kr.gyeoul.listener.plugin.PluginLoader;
+import kr.gyeoul.util.JsonManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.minestom.server.MinecraftServer;
@@ -10,26 +12,38 @@ import net.minestom.server.instance.InstanceContainer;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public final class serverSettings {
-    private static MinecraftServer minecraftServer;
-    private static InstanceContainer instanceContainer;
-    private static final ComponentLogger logger = MinecraftServer.LOGGER;
-    private static worldInstance worldInstance;
-    private static minestomEventListener eventListener;
+//핵심은 serverSettings에 static을 사용해서 통합으로 불러올 수 있게 하는거.
+//싱글톤 형태로 대체.
+public final class ServerSettings {
+    private static ServerSettings instance;
+    private MinecraftServer minecraftServer;
+    private InstanceContainer instanceContainer;
+    private final ComponentLogger logger = MinecraftServer.LOGGER;
+    private WorldInstance worldInstance;
+    private MinestomEventListener eventListener;
 
-    public serverSettings() {
+    private ServerSettings() {
         // MinecraftServer 초기화
         minecraftServer = MinecraftServer.init();
         instanceContainer = MinecraftServer.getInstanceManager().createInstanceContainer();
-        worldInstance = new worldInstance(MinecraftServer.getInstanceManager(), instanceContainer);
-        eventListener = new minestomEventListener(minecraftServer, instanceContainer);
+        worldInstance = new WorldInstance(MinecraftServer.getInstanceManager(), instanceContainer);
+        eventListener = new MinestomEventListener(minecraftServer, instanceContainer);
     }
 
-    private void firstStart(){
+    public static ServerSettings getInstance() {
+        if (instance == null){
+            instance = new ServerSettings();
+        }
+        return instance;
+    }
+
+    private void setup(){
         createDefaultServerConfig();
+        JsonManager.createFolder("plugins");
         if(!createEula()){
             return;
         }
@@ -39,11 +53,24 @@ public final class serverSettings {
 
     public void start() {
         // Server startup logic here
-        firstStart();
-        logger.info(Component.text("마인크래프트 서버가 시작되었습니다."));
+        try {
+            if (new ServerSocket(25565).isClosed()) {
+                logger.info(Component.text("해당 포트가 이미 사용 중입니다. 서버를 시작합니다."));
+            } else {
+                logger.info(Component.text("해당 포트가 이미 사용 중입니다. 서버를 시작할 수 없습니다."));
+                return;
+            }
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+        setup();
+        PluginLoader.getInstance().start();
         minecraftServer.start("0.0.0.0", 25565);
+        logger.info(Component.text("마인크래프트 서버가 시작되었습니다."));
     }
 
+
+    //EULA 생성용.
     private boolean createEula(){
         Path configPath = Path.of(System.getProperty("user.dir")).resolve("eula.json");
         File file = new File(configPath.toUri());
@@ -65,6 +92,7 @@ public final class serverSettings {
     }
 
     //configPath.toUri()
+    //config.json 생성용.
     private void createDefaultServerConfig(){
         Path configPath = Path.of(System.getProperty("user.dir")).resolve("config.json");
         File file = new File(configPath.toUri());
@@ -84,19 +112,19 @@ public final class serverSettings {
         }
     }
 
-    public static MinecraftServer getMinecraftServer() {
+    public MinecraftServer getMinecraftServer() {
         return minecraftServer;
     }
 
-    public static minestomEventListener getEventListener() {
+    public MinestomEventListener getEventListener() {
         return eventListener;
     }
 
-    public static InstanceContainer getInstanceContainer() {
+    public InstanceContainer getInstanceContainer() {
         return instanceContainer;
     }
 
-    public static ComponentLogger getLogger() {
+    public ComponentLogger getLogger() {
         return logger;
     }
 }
