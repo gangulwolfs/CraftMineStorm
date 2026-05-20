@@ -1,5 +1,6 @@
 package kr.gyeoul;
 
+import kr.gyeoul.command.*;
 import kr.gyeoul.instances.WorldInstance;
 import kr.gyeoul.instances.worldType;
 import kr.gyeoul.listener.events.MinestomEventListener;
@@ -65,8 +66,17 @@ public final class ServerSettings {
         }
         setup();
         PluginLoader.getInstance().start();
+        commandRegister();
         minecraftServer.start("0.0.0.0", 25565);
         logger.info(Component.text("마인크래프트 서버가 시작되었습니다."));
+    }
+
+    private void commandRegister() {
+        MinecraftServer.getCommandManager().register(new ServerCommand("help"));
+        MinecraftServer.getCommandManager().register(new GameModeCommand());
+        MinecraftServer.getCommandManager().register(new SetSpawnCommand());
+        MinecraftServer.getCommandManager().register(new SpawnCommand());
+        MinecraftServer.getCommandManager().register(new TeleportCommand());
     }
 
 
