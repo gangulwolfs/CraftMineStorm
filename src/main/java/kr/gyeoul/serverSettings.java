@@ -1,7 +1,12 @@
 package kr.gyeoul;
 
-import kr.gyeoul.util.JsonManager;
+import kr.gyeoul.instances.worldInstance;
+import kr.gyeoul.instances.worldType;
+import kr.gyeoul.listener.events.minestomEventListener;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.instance.InstanceContainer;
 
 import java.io.File;
 import java.io.InputStream;
@@ -10,24 +15,32 @@ import java.nio.file.Path;
 
 public final class serverSettings {
     private static MinecraftServer minecraftServer;
+    private static InstanceContainer instanceContainer;
+    private static final ComponentLogger logger = MinecraftServer.LOGGER;
+    private static worldInstance worldInstance;
+    private static minestomEventListener eventListener;
 
     public serverSettings() {
         // MinecraftServer 초기화
         minecraftServer = MinecraftServer.init();
-        firstStart();
+        instanceContainer = MinecraftServer.getInstanceManager().createInstanceContainer();
+        worldInstance = new worldInstance(MinecraftServer.getInstanceManager(), instanceContainer);
+        eventListener = new minestomEventListener(minecraftServer, instanceContainer);
     }
 
     private void firstStart(){
+        createDefaultServerConfig();
         if(!createEula()){
-
-            //대충 서버 중단.
-
+            return;
         }
+        worldInstance.worldGeneratorSelection(worldType.TEST, "world");
     }
 
 
     public void start() {
         // Server startup logic here
+        firstStart();
+        logger.info(Component.text("마인크래프트 서버가 시작되었습니다."));
         minecraftServer.start("0.0.0.0", 25565);
     }
 
@@ -37,19 +50,18 @@ public final class serverSettings {
         if(!file.exists()){
             try (InputStream inputStream = Main.class.getResourceAsStream("/eula.json")) {
                 if (inputStream != null) {
-
                     Files.copy(inputStream, configPath);
-                    return true;
-                    //생성됨 메시지.
+                    logger.info(Component.text("EULA 파일이 생성되었습니다. eula.json 파일을 열어 EULA에 동의해주세요."));
+                    return false;
                 } else {
-                    //jar안에 찾을 수 없는 경우.ㅇ.ㅇ
-
+                    logger.warn(Component.text("EULA 파일을 찾을 수 없습니다. 서버를 시작할 수 없습니다."));
                     return false;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 
     //configPath.toUri()
@@ -59,11 +71,12 @@ public final class serverSettings {
         if(!file.exists()){
             try (InputStream inputStream = Main.class.getResourceAsStream("/config.json")) {
                 if (inputStream != null) {
-
                     Files.copy(inputStream, configPath);
-                    //생성됨 메시지.
+                    logger.info(Component.text("config.json 파일이 생성되었습니다."));
+                    return;
                 } else {
-                    //jar안에 찾을 수 없는 경우.ㅇ.ㅇ
+                    logger.info(Component.text("config.json 파일을 찾을 수 없습니다. 치명적인 오류가 발생합니다."));
+                    throw new RuntimeException("config.json 파일을 찾을 수 없습니다. 치명적인 오류가 발생합니다.");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -71,9 +84,19 @@ public final class serverSettings {
         }
     }
 
-
     public static MinecraftServer getMinecraftServer() {
         return minecraftServer;
     }
 
+    public static minestomEventListener getEventListener() {
+        return eventListener;
+    }
+
+    public static InstanceContainer getInstanceContainer() {
+        return instanceContainer;
+    }
+
+    public static ComponentLogger getLogger() {
+        return logger;
+    }
 }

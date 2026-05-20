@@ -31,6 +31,8 @@ dependencies {
     implementation("org.jline:jline:3.30.0")
     //Gson lib -> json.
     implementation("com.google.code.gson:gson:2.14.0")
+    //slf4j-api -> adventure text logger.
+    implementation("org.slf4j:slf4j-api:2.0.18")
 
 }
 
