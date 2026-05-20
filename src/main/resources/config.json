@@ -1,0 +1,17 @@
+{
+  "server": {
+    "ip": "0.0.0.0",
+    "port": 25565,
+    "name": "CraftMineStorm Server",
+    "motd": "A Minestom-powered Minecraft Server",
+    "online-mode": true,
+    "max-players": 20
+  },
+  "game": {
+    "difficulty": "NORMAL",
+    "gamemode": "SURVIVAL",
+    "view-distance": 8,
+    "world-type": "flat",
+    "_world-type-comment": "Options: default, flat, void"
+  }
+}
