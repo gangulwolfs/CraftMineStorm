@@ -33,6 +33,9 @@ dependencies {
     implementation("com.google.code.gson:gson:2.14.0")
     //slf4j-api -> adventure text logger.
     implementation("org.slf4j:slf4j-api:2.0.18")
+    //cache data lib
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.4")
+
 
 }
 

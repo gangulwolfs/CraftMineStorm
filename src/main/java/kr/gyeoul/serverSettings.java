@@ -1,10 +1,13 @@
 package kr.gyeoul;
 
-import kr.gyeoul.command.*;
+import com.github.benmanes.caffeine.cache.AsyncCache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import kr.gyeoul.commands.*;
+import kr.gyeoul.commands.SpawnCommand;
 import kr.gyeoul.instances.WorldInstance;
 import kr.gyeoul.instances.worldType;
-import kr.gyeoul.listener.events.MinestomEventListener;
-import kr.gyeoul.listener.plugin.PluginLoader;
+import kr.gyeoul.listeners.events.MinestomEventListener;
+import kr.gyeoul.listeners.plugin.PluginLoader;
 import kr.gyeoul.util.JsonManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -16,6 +19,9 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.util.Set;
+import java.util.UUID;
 
 //핵심은 serverSettings에 static을 사용해서 통합으로 불러올 수 있게 하는거.
 //싱글톤 형태로 대체.
@@ -26,6 +32,7 @@ public final class ServerSettings {
     private final ComponentLogger logger = MinecraftServer.LOGGER;
     private WorldInstance worldInstance;
     private MinestomEventListener eventListener;
+    private AsyncCache<UUID, Set<String>> permissionCache;
 
     private ServerSettings() {
         // MinecraftServer 초기화
@@ -65,10 +72,17 @@ public final class ServerSettings {
             e.printStackTrace();
         }
         setup();
-        PluginLoader.getInstance().start();
+        permissionCache();
         commandRegister();
+        PluginLoader.getInstance().start();
         minecraftServer.start("0.0.0.0", 25565);
         logger.info(Component.text("마인크래프트 서버가 시작되었습니다."));
+    }
+
+    private void permissionCache() {
+        this.permissionCache = Caffeine.newBuilder()
+                .refreshAfterWrite(Duration.ofMillis(100))
+                .buildAsync();
     }
 
     private void commandRegister() {
@@ -120,6 +134,10 @@ public final class ServerSettings {
                 e.printStackTrace();
             }
         }
+    }
+
+    private AsyncCache<UUID, Set<String>> getPermissionCache() {
+        return permissionCache;
     }
 
     public MinecraftServer getMinecraftServer() {
