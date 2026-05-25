@@ -2,7 +2,7 @@
 
 ![Java](https://img.shields.io/badge/Java-21%2B-orange?style=for-the-badge&logo=openjdk)
 ![Minestom](https://img.shields.io/badge/Minestom-Latest-blue?style=for-the-badge)
-![Minestom-License](https://img.shields.io/badge/Minestom-Apache--2.0-blue?style=for-the-badge)
+![License](https://img.shields.io/badge/Minestom-Apache--2.0-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-GNU--GPLv3-red?style=for-the-badge)
 
 Minestom 기반의 서버를 Spigot이나 Paper처럼 친숙하고 빠르게 개발할 수 있도록 기본적인 틀을 개인적으로 만들어보는 실험용 프로젝트입니다.
