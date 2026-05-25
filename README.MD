@@ -27,8 +27,9 @@ Minestom 기반의 서버를 Spigot이나 Paper처럼 친숙하고 빠르게 개
 
 ---
 
-🤝 기여하기 (Contributing)
-이 프로젝트는 오픈소스로 운영되며, Minestom을 더 쉽게 다루기 위한 모든 아이디어를 환영합니다!
+## 🤝 기여하기 (Contributing)
+
+* 이 프로젝트는 오픈소스로 운영되며, Minestom을 더 쉽게 다루기 위한 모든 아이디어를 환영합니다!
 
 1. 새 기능 브랜치를 생성합니다 (git checkout -b feature/AmazingFeature).
 
