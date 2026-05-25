@@ -1,5 +1,11 @@
 # 🚀 Minestom Bukkit-Like Boilerplate
 
+<p align="center">
+  <img src="images/logo" alt="CraftMineStom Banner" width="100%">
+</p>
+
+---
+
 ![Java](https://img.shields.io/badge/Java-21%2B-orange?style=for-the-badge&logo=openjdk)
 ![Minestom](https://img.shields.io/badge/Minestom-Latest-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/Minestom-Apache--2.0-blue?style=for-the-badge)
