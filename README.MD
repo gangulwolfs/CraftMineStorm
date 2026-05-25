@@ -1,6 +1,6 @@
 # 🚀 Minestom Bukkit-Like Boilerplate
 
-![Java](https://img.shields.io/badge/Java-17%2B-orange?style=for-the-badge&logo=openjdk)
+![Java](https://img.shields.io/badge/Java-21%2B-orange?style=for-the-badge&logo=openjdk)
 ![Minestom](https://img.shields.io/badge/Minestom-Latest-blue?style=for-the-badge)
 ![Minestom-License](https://img.shields.io/badge/Minestom-Apache--2.0-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-GNU--GPLv3-red?style=for-the-badge)
