@@ -1,7 +1,7 @@
 # 🚀 Minestom Bukkit-Like Boilerplate
 
 <p align="center">
-  <img src="images/logo" alt="CraftMineStom Banner" width="100%">
+  <img src="images/logo.png" alt="CraftMineStom Banner" width="100%">
 </p>
 
 ---
