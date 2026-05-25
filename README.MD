@@ -23,3 +23,18 @@ Minestom 기반의 서버를 Spigot이나 Paper처럼 친숙하고 빠르게 개
 ### 요구 사항 (Prerequisites)
 * **Java 21** 이상 (Minestom 최신 버전 기준)
 * Build Tool: **Gradle (Kotlin DSL)**
+
+🤝 기여하기 (Contributing)
+이 프로젝트는 오픈소스로 운영되며, Minestom을 더 쉽게 다루기 위한 모든 아이디어를 환영합니다!
+
+1. 새 기능 브랜치를 생성합니다 (git checkout -b feature/AmazingFeature).
+
+2. 변경 사항을 커밋합니다 (git commit -m 'Add some AmazingFeature').
+
+3. 브랜치에 푸시합니다 (git push origin feature/AmazingFeature).
+
+4. Pull Request를 열어주세요.
+
+📄 라이선스 (License)
+This project is licensed under the GNU General Public License v3.0 - see the LICENSE file for details.
+original: Minestom (Apache License 2.0)
